@@ -27,4 +27,4 @@ Developed with Python 3 with libraries of:
 
 
 ## 📚Licensing, Authors, Acknowledgements
-This application was made as part of the Udacity Data Scientist Nanodegree program, who provided the code templates and data. The original data was provided by Figure Eight's Udacity.
+This application was made as part of the Udacity Data Scientist Nanodegree [link]([https://www.kaggle.com/datasets/airbnb/seattle](https://learn.udacity.com/my-programs?tab=Currently%2520Learning) program, who provided the code templates and data. The original data was provided by Figure Eight's Udacity [link]https://appen.com/#customers.
