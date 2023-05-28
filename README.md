@@ -14,23 +14,23 @@ To carry out this project, you must build a basic ETL pipeline that loads and cl
 
 ## 🔌Installation
 Developed with Python 3 with libraries of:
-  *numpy 
-  *pandas 
-  *sqlalchemy
-  *re
-  *nltk
-  *pickle 
-  *sklearn
-  *warnings
+  * numpy 
+  * pandas 
+  * sqlalchemy
+  * re
+  * nltk
+  * pickle 
+  * sklearn
+  * warnings
 
 ## 📁File Descriptions
-*disaster_categories.csv: Database containing the ID, the message that was sent, and the gender.
-*disaster_messages.csv: Database containing the ID and the categories the message belonged to.
-*DisasterResponse.db: Cleaned data
-*process_data.py: Code used for cleaning and preprocessing data.
-*train_classifier.py: Code used to train the model
-*classifier.pkl: Trained model
-*run.py: To run Web App
+  * disaster_categories.csv: Database containing the ID, the message that was sent, and the gender
+  * disaster_messages.csv: Database containing the ID and the categories the message belonged to
+  * DisasterResponse.db: Cleaned data
+  * process_data.py: Code used for cleaning and preprocessing data.
+  * train_classifier.py: Code used to train the model
+  * classifier.pkl: Trained model
+  * run.py: To run Web App
 
 ## 📚Licensing, Authors, Acknowledgements
 This application was made as part of the [Udacity Data Scientist Nanodegree](https://learn.udacity.com/my-programs?tab=Currently%2520Learning) program, who provided the code templates and data. The original data was provided by [Figure Eight's](https://appen.com/#customers) Udacity.
