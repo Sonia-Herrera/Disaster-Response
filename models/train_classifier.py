@@ -1,24 +1,78 @@
+#libraries
 import sys
-
+import nltk
+import re
+nltk.download(['punkt', 'wordnet'])
+import warnings
+import pickle
+import pandas as pd
+from sqlalchemy import create_engine
+from nltk.tokenize import word_tokenize
+from nltk.stem import WordNetLemmatizer
+from sklearn.multioutput import MultiOutputClassifier
+from sklearn.pipeline import Pipeline
+from sklearn.model_selection import train_test_split, GridSearchCV
+from sklearn.feature_extraction.text import CountVectorizer, TfidfTransformer
+from sklearn.metrics import classification_report, accuracy_score, confusion_matrix
+from sklearn.multioutput import MultiOutputClassifier
+from sklearn.ensemble import RandomForestClassifier
 
 def load_data(database_filepath):
-    pass
+    '''Load the created database'''
+    engine = create_engine('sqlite:///'+database_filepath)
+    df = pd.read_sql_table('DisasterResponse', engine)
+    X = df.message
+    y = df[df.columns[4:]]
+    category_names = y.columns
+    return X, y, category_names 
 
 
 def tokenize(text):
-    pass
+    # remove URL present in the messages
+    url_regex = 'http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+'
+    detected_urls = re.findall(url_regex, text)
+    for url in detected_urls:
+        text = text.replace(url, "urlplaceholder")
 
+    # convert text messages into tokens
+    tokens = word_tokenize(text)
+    lemmatizer = WordNetLemmatizer()
+
+    clean_tokens = []
+    for tok in tokens:
+        clean_tok = lemmatizer.lemmatize(tok).lower().strip()
+        clean_tokens.append(clean_tok)
+
+    return clean_tokens    
 
 def build_model():
-    pass
+    ''' Create a pipeline for this model '''
+    pipeline = Pipeline([
+        ('vect', CountVectorizer(tokenizer=tokenize)),
+        ('tfidf', TfidfTransformer()),
+        ('clf', MultiOutputClassifier(RandomForestClassifier()))
+    ])
+    
+    parameters = {
+        'clf__estimator__n_estimators': [8, 15],
+        'clf__estimator__min_samples_split': [2],
+    
+    }
+    model = GridSearchCV(pipeline, param_grid=parameters, n_jobs=4, verbose=2, cv=3)
+    return model
 
-
-def evaluate_model(model, X_test, Y_test, category_names):
-    pass
-
+def evaluate_model(model, X_test, y_test, category_names):
+    '''Evaluate the model performance'''
+    y_pred = model.predict(X_test)
+    print(classification_report(y_test, y_pred, target_names=category_names))
+    
+    for i in range(Y_test.shape[1]):
+        print('%25s accuracy : %.2f' %(category_names[i], accuracy_score(Y_test[:,i], y_pred[:,i])))
 
 def save_model(model, model_filepath):
-    pass
+    '''save the model.'''
+    with open(model_filepath, 'wb') as file:
+        pickle.dump(model, file)
 
 
 def main():
